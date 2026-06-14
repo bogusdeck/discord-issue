@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vercel dev"
   },
-  "type": "module",
   "engines": {
     "node": ">=18"
   },

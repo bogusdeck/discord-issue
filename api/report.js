@@ -179,7 +179,7 @@ function buildFixHint(traceback, level) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Vercel serverless handler
 // ─────────────────────────────────────────────────────────────────────────────
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS — allow your Django origin (set ALLOWED_ORIGIN in env for production)
   const allowedOrigin = process.env.ALLOWED_ORIGIN ?? "*";
   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
