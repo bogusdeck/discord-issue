@@ -1,0 +1,16 @@
+{
+  "name": "discord-bug-bot",
+  "version": "1.0.0",
+  "description": "Sentry-style Discord bug reporter — Vercel serverless",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "vercel": "^34.0.0"
+  }
+}
