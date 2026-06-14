@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────────────────────────────────────
 BUGBOT_URL    = os.getenv("BUGBOT_URL", "")          # https://your-bot.vercel.app/api/report
 BUGBOT_SECRET = os.getenv("BUGBOT_SECRET", "")       # matches BOT_SECRET on Vercel
-BUGBOT_ENV    = os.getenv("BUGBOT_ENV", "production")
+BUGBOT_ENV    = os.getenv("BUGBOT_ENV") or os.getenv("DJANGO_ENV", "production")  # production | development
 BUGBOT_ASYNC  = os.getenv("BUGBOT_ASYNC", "true").lower() == "true"  # fire-and-forget
 
 

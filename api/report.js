@@ -117,7 +117,7 @@ function buildEmbed(body) {
   }
 
   return {
-    username:   "BugBot 🐛",
+    username:   environment === "production" ? "BugBot 🐛 [PROD]" : "BugBot 🐛 [DEV]",
     avatar_url: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png",
     embeds: [
       {
@@ -125,7 +125,7 @@ function buildEmbed(body) {
         color:       cfg.color,
         fields,
         footer: {
-          text: `Reported at ${ts}`,
+          text: `${environment === "production" ? "🔴 PRODUCTION" : "🟢 DEVELOPMENT"} · Reported at ${ts}`,
         },
         timestamp: ts,
       },
@@ -206,10 +206,18 @@ module.exports = async function handler(req, res) {
   if (!body.title)
     return res.status(400).json({ error: "`title` field is required" });
 
-  // ── Webhook URL ───────────────────────────────────────────────
-  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-  if (!webhookUrl)
-    return res.status(500).json({ error: "DISCORD_WEBHOOK_URL is not configured" });
+  // ── Webhook URL — route by environment ─────────────────────────
+  const env = (body.environment ?? "production").toLowerCase();
+  const isProd = env === "production";
+
+  const webhookUrl = isProd
+    ? process.env.DISCORD_WEBHOOK_URL_PROD
+    : process.env.DISCORD_WEBHOOK_URL_DEV;
+
+  if (!webhookUrl) {
+    const missing = isProd ? "DISCORD_WEBHOOK_URL_PROD" : "DISCORD_WEBHOOK_URL_DEV";
+    return res.status(500).json({ error: `${missing} is not configured` });
+  }
 
   // ── Build & send embed ────────────────────────────────────────
   const embed = buildEmbed(body);
