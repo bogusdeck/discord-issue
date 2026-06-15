@@ -211,12 +211,12 @@ module.exports = async function handler(req, res) {
   const isProd = env === "production";
 
   const webhookUrl = isProd
-    ? process.env.DISCORD_WEBHOOK_URL_PROD
-    : process.env.DISCORD_WEBHOOK_URL_DEV;
+    ? (process.env.DISCORD_WEBHOOK_URL_PROD || process.env.DISCORD_WEBHOOK_URL)
+    : (process.env.DISCORD_WEBHOOK_URL_DEV || process.env.DISCORD_WEBHOOK_URL);
 
   if (!webhookUrl) {
     const missing = isProd ? "DISCORD_WEBHOOK_URL_PROD" : "DISCORD_WEBHOOK_URL_DEV";
-    return res.status(500).json({ error: `${missing} is not configured` });
+    return res.status(500).json({ error: `${missing} or DISCORD_WEBHOOK_URL is not configured` });
   }
 
   // ── Build & send embed ────────────────────────────────────────
